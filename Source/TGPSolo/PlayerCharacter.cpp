@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
