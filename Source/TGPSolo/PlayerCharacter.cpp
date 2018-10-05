@@ -26,12 +26,12 @@ APlayerCharacter::APlayerCharacter()
 	Root->GetBodyInstance()->bLockZRotation = true;
 
 	//Create Camera and Visible Object
-	UCameraComponent* PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
 
 	//Attach to root and offset camera
 	PlayerCamera->SetupAttachment(Root);
-	PlayerCamera->SetRelativeLocation(FVector(-500.0f, 0.0f, 500.0f));
+	PlayerCamera->SetRelativeLocation(FVector(-800.0f, 0.0f, 800.0f));
 	PlayerCamera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 	VisibleComponent->SetupAttachment(Root);
 	VisibleComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -44.0f));

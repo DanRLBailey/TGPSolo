@@ -33,6 +33,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCapsuleComponent* Root;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UCameraComponent* PlayerCamera;
+
 	//Input Functions
 	void Move_XAxis(float AxisValue);
 	void Move_YAxis(float AxisValue);
