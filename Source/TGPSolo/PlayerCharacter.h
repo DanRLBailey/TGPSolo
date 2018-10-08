@@ -26,26 +26,45 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
-	UPROPERTY(EditAnywhere)
-	USceneComponent* VisibleComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* Ball;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	class UCapsuleComponent* Root;
+	class USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCameraComponent* PlayerCamera;
 
+
 	//Input Functions
-	void Move_XAxis(float AxisValue);
-	void Move_YAxis(float AxisValue);
 	void Jump();
+	void MoveUpPressed();
+	void MoveDownPressed();
+	void MoveLeftPressed();
+	void MoveRightPressed();
+	void MoveUpReleased();
+	void MoveDownReleased();
+	void MoveLeftReleased();
+	void MoveRightReleased();
+
+	void ChangeWeapon();
 
 	//Input Variables
 	FVector currentVelocity;
 	float velocityMultiplier;
+	bool moveUp;
+	bool moveDown;
+	bool moveLeft;
+	bool moveRight;
+
 	bool canJump;
 	float gameTime;
 	float currentTime;
 	float jumpTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=CurrentWeapon)
+	int currentWeapon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=WeaponArray)
+	TArray<int> weaponArray;
+	bool canFire;
 };

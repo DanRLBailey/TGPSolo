@@ -17,38 +17,42 @@ APlayerCharacter::APlayerCharacter()
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 	//Create & Setup Root Component
-	Root = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Root"));
-	Root->SetSimulatePhysics(true);
-	Root->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	Root->SetRelativeLocation(FVector(0.0f, 0.0f, 44.0f));
-	Root->GetBodyInstance()->bLockXRotation = true;
-	Root->GetBodyInstance()->bLockYRotation = true;
-	Root->GetBodyInstance()->bLockZRotation = true;
+	Ball = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Ball"));
+	Ball->SetSimulatePhysics(true);
+	Ball->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	Ball->SetRelativeLocation(FVector(0.0f, 0.0f, 44.0f));
 
-	//Create Camera and Visible Object
+	//Create Spring Arm and Camera
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(Ball);
+	CameraBoom->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	CameraBoom->TargetArmLength = 1200.0f;
+
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
-	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
-
-	//Attach to root and offset camera
-	PlayerCamera->SetupAttachment(Root);
-	PlayerCamera->SetRelativeLocation(FVector(-800.0f, 0.0f, 800.0f));
-	PlayerCamera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-	VisibleComponent->SetupAttachment(Root);
-	VisibleComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -44.0f));
+	PlayerCamera->SetupAttachment(CameraBoom);
+	
 
 	//Initialise Variables
+	moveUp = false;
+	moveDown = false;
+	moveLeft = false;
+	moveRight = false;
 	velocityMultiplier = 100.0f;
+
 	gameTime = 0.0f;
 	currentTime = 0.0f;
 	jumpTimer = 1.0f;
 	canJump = true;
+
+	currentWeapon = 0;
+	weaponArray = { 0, 1, 2, 3 };
+	canFire = true;
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -57,24 +61,32 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	gameTime += DeltaTime;
 
-	if (!currentVelocity.IsZero())
+	//Movement
 	{
-		FVector NewLocation = GetActorLocation() + (currentVelocity * DeltaTime);
-		SetActorLocation(NewLocation);
-
-		if (velocityMultiplier <= 1000.0)
+		if (moveUp)
 		{
-			velocityMultiplier += 10;
+			Ball->AddImpulse(FVector(3000.0f, 0.0f, 0.0f));
 		}
-	}
-	else
-	{
-		velocityMultiplier = 100.0;
-	}
 
-	if (gameTime >= (currentTime + jumpTimer))
-	{
-		canJump = true;
+		if (moveDown)
+		{
+			Ball->AddImpulse(FVector(-3000.0f, 0.0f, 0.0f));
+		}
+
+		if (moveLeft)
+		{
+			Ball->AddImpulse(FVector(0.0f, -3000.0f, 0.0f));
+		}
+
+		if (moveRight)
+		{
+			Ball->AddImpulse(FVector(0.0f, 3000.0f, 0.0f));
+		}
+
+		if (gameTime >= (currentTime + jumpTimer))
+		{
+			canJump = true;
+		}
 	}
 }
 
@@ -83,21 +95,15 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputComponent->BindAxis("MoveX", this, &APlayerCharacter::Move_XAxis);
-	InputComponent->BindAxis("MoveY", this, &APlayerCharacter::Move_YAxis);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
-}
-
-void APlayerCharacter::Move_XAxis(float AxisValue)
-{
-	//Move at 100 units/s forward or backward
-	currentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * velocityMultiplier;
-}
-
-void APlayerCharacter::Move_YAxis(float AxisValue)
-{
-	//Move at 100 units/s right or left
-	currentVelocity.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * velocityMultiplier;
+	InputComponent->BindAction("MoveUp", IE_Pressed, this, &APlayerCharacter::MoveUpPressed);
+	InputComponent->BindAction("MoveDown", IE_Pressed, this, &APlayerCharacter::MoveDownPressed);
+	InputComponent->BindAction("MoveLeft", IE_Pressed, this, &APlayerCharacter::MoveLeftPressed);
+	InputComponent->BindAction("MoveRight", IE_Pressed, this, &APlayerCharacter::MoveRightPressed);
+	InputComponent->BindAction("MoveUp", IE_Released, this, &APlayerCharacter::MoveUpReleased);
+	InputComponent->BindAction("MoveDown", IE_Released, this, &APlayerCharacter::MoveDownReleased);
+	InputComponent->BindAction("MoveLeft", IE_Released, this, &APlayerCharacter::MoveLeftReleased);
+	InputComponent->BindAction("MoveRight", IE_Released, this, &APlayerCharacter::MoveRightReleased);
 }
 
 void APlayerCharacter::Jump()
@@ -105,11 +111,51 @@ void APlayerCharacter::Jump()
 	if (canJump)
 	{
 		canJump = false;
-		Root->SetPhysicsLinearVelocity(FVector(0.0f, 0.0f, 500.0f));
+		Ball->AddImpulse(FVector(0.0f, 0.0f, 50000.0f));
 
 		if (gameTime >= (currentTime + jumpTimer))
 		{
 			currentTime = gameTime;
 		}
 	}
+}
+
+void APlayerCharacter::MoveUpPressed()
+{
+	moveUp = true;
+}
+
+void APlayerCharacter::MoveDownPressed()
+{
+	moveDown = true;
+}
+
+void APlayerCharacter::MoveLeftPressed()
+{
+	moveLeft = true;
+}
+
+void APlayerCharacter::MoveRightPressed()
+{
+	moveRight = true;
+}
+
+void APlayerCharacter::MoveUpReleased()
+{
+	moveUp = false;
+}
+
+void APlayerCharacter::MoveDownReleased()
+{
+	moveDown = false;
+}
+
+void APlayerCharacter::MoveLeftReleased()
+{
+	moveLeft = false;
+}
+
+void APlayerCharacter::MoveRightReleased()
+{
+	moveRight = false;
 }
