@@ -47,6 +47,8 @@ APlayerCharacter::APlayerCharacter()
 	currentWeapon = 0;
 	weaponArray = { 0, 1, 2, 3 };
 	canFire = true;
+
+	health = 1;
 }
 
 // Called when the game starts or when spawned

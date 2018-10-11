@@ -62,9 +62,14 @@ public:
 	float currentTime;
 	float jumpTimer;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=CurrentWeapon)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Weapon)
 	int currentWeapon;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=WeaponArray)
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Weapon)
 	TArray<int> weaponArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Health)
+	float health;
+
 	bool canFire;
 };
