@@ -23,6 +23,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* Mesh;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnEnemy();
 	
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
+	float spawnTimer;
+
+	float gameTime;
 };

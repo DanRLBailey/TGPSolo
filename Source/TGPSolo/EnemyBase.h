@@ -26,7 +26,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* Mesh;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void FireWeapon();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void MoveToPlayer();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CheckForDeath();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Health)
 	float health;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
+	float fireTime;
+
+	float gameTime;
 };

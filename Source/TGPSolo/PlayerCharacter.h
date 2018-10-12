@@ -35,7 +35,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCameraComponent* PlayerCamera;
 
-
 	//Input Functions
 	void Jump();
 	void MoveUpPressed();

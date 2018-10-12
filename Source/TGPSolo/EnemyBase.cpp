@@ -14,6 +14,8 @@ AEnemyBase::AEnemyBase()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	health = 1;
+	fireTime = 1;
+	gameTime = 0;
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +29,18 @@ void AEnemyBase::BeginPlay()
 void AEnemyBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	gameTime += DeltaTime;
+	MoveToPlayer();
 
+	if (gameTime >= fireTime)
+	{
+		gameTime = 0;
+		FireWeapon();
+	}
+	
+	//Check For Death
+	if (health <= 0)
+	{
+		Destroy();
+	}
 }
-

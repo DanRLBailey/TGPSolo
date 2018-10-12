@@ -3,7 +3,6 @@
 #include "BulletBase.h"
 #include "Components/StaticMeshComponent.h"
 
-
 // Sets default values
 ABulletBase::ABulletBase()
 {
@@ -21,7 +20,7 @@ ABulletBase::ABulletBase()
 void ABulletBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Mesh->AddLocalOffset(FVector(100.0f, 0.0f, 0.0f));
 }
 
 // Called every frame

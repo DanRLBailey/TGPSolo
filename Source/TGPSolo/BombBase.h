@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BulletBase.generated.h"
+#include "BombBase.generated.h"
 
 UCLASS()
-class TGPSOLO_API ABulletBase : public AActor
+class TGPSOLO_API ABombBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABulletBase();
+	ABombBase();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,11 +26,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=BulletTimers)
-	float bulletTimer;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=BulletTimers)
-	float bulletDestroyTime;
+	UFUNCTION(BlueprintImplementableEvent)
+	void Explode();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BulletTimers)
+	float bombTimer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BulletTimers)
+	float bombDestroyTime;
 	
 };
