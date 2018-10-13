@@ -35,6 +35,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCameraComponent* PlayerCamera;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ChangeWeapon();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void FireWeapon();
+
 	//Input Functions
 	void Jump();
 	void MoveUpPressed();
@@ -45,8 +51,6 @@ public:
 	void MoveDownReleased();
 	void MoveLeftReleased();
 	void MoveRightReleased();
-
-	void ChangeWeapon();
 
 	//Input Variables
 	FVector currentVelocity;

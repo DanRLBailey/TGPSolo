@@ -63,6 +63,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	gameTime += DeltaTime;
 
+	ChangeWeapon();
+	FireWeapon();
+
 	//Movement
 	{
 		if (moveUp)
