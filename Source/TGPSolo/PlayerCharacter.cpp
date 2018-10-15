@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Engine.h"
 
 // Sets default values
@@ -49,6 +50,7 @@ APlayerCharacter::APlayerCharacter()
 	canFire = true;
 
 	health = 1;
+	currentWave = 0;
 }
 
 // Called when the game starts or when spawned
@@ -64,7 +66,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 	gameTime += DeltaTime;
 
 	ChangeWeapon();
-	FireWeapon();
 
 	//Movement
 	{

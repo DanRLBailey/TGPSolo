@@ -38,9 +38,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeWeapon();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void FireWeapon();
-
 	//Input Functions
 	void Jump();
 	void MoveUpPressed();
@@ -75,4 +72,7 @@ public:
 	float health;
 
 	bool canFire;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Wave)
+	int currentWave;
 };
