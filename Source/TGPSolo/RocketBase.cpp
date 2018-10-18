@@ -1,40 +1,39 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "EnemySpawnerBase.h"
+#include "RocketBase.h"
 #include "Components/StaticMeshComponent.h"
 
-
 // Sets default values
-AEnemySpawnerBase::AEnemySpawnerBase()
+ARocketBase::ARocketBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Create & Setup Root Component
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->AddLocalOffset(FVector(0.0f, 0.0f, 1.0f));
 
-	spawnTimer = 5.0f;
-	gameTime = 0;
+	rocketTimer = 0.0f;
+	rocketDestroyTime = 1.5f;
 }
 
 // Called when the game starts or when spawned
-void AEnemySpawnerBase::BeginPlay()
+void ARocketBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Mesh->AddLocalOffset(FVector(150.0f, 0.0f, 0.0f));
 }
 
 // Called every frame
-void AEnemySpawnerBase::Tick(float DeltaTime)
+void ARocketBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	gameTime += DeltaTime;
+	rocketTimer += DeltaTime;
 
-	if (gameTime >= spawnTimer)
+	Mesh->AddLocalOffset(FVector(10.0f, 0.0f, 0.0f));
+
+	if (rocketTimer >= rocketDestroyTime)
 	{
-		gameTime = 0;
-		//SpawnEnemy();
+		Explode();
 	}
 }
 

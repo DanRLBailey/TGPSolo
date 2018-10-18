@@ -14,23 +14,20 @@ APlayerCharacter::APlayerCharacter()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Auto Possess
+	//Auto possess
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
-	//Create & Setup Root Component
+	//Create & setup root component
 	Ball = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Ball"));
 	Ball->SetSimulatePhysics(true);
 	Ball->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	Ball->SetRelativeLocation(FVector(0.0f, 0.0f, 44.0f));
 
-	//Create Spring Arm and Camera
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(Ball);
-	CameraBoom->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-	CameraBoom->TargetArmLength = 1200.0f;
-
+	//Create camera and attach to root
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
-	PlayerCamera->SetupAttachment(CameraBoom);
+	PlayerCamera->SetupAttachment(Ball);
+	PlayerCamera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	PlayerCamera->SetRelativeLocation(FVector(-800.0f, 0.0f, 800.0f));
 	
 
 	//Initialise Variables
@@ -46,11 +43,9 @@ APlayerCharacter::APlayerCharacter()
 	canJump = true;
 
 	currentWeapon = 0;
-	weaponArray = { 0, 1, 2, 3 };
-	canFire = true;
+	weaponArray = { 0, 1, 2, 3};
 
 	health = 1;
-	currentWave = 0;
 }
 
 // Called when the game starts or when spawned
@@ -62,38 +57,52 @@ void APlayerCharacter::BeginPlay()
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	gameTime += DeltaTime;
-
-	ChangeWeapon();
-
-	//Movement
+	if (health <= 0)
 	{
-		if (moveUp)
-		{
-			Ball->AddImpulse(FVector(3000.0f, 0.0f, 0.0f));
-		}
+		gameOver = true;
+		GameOver();
+	}
+	else
+	{
+		gameOver = false;
+	}
 
-		if (moveDown)
-		{
-			Ball->AddImpulse(FVector(-3000.0f, 0.0f, 0.0f));
-		}
+	if (!gameOver)
+	{
+		Super::Tick(DeltaTime);
+		gameTime += DeltaTime;
 
-		if (moveLeft)
-		{
-			Ball->AddImpulse(FVector(0.0f, -3000.0f, 0.0f));
-		}
+		ChangeWeapon();
 
-		if (moveRight)
+		//Movement
 		{
-			Ball->AddImpulse(FVector(0.0f, 3000.0f, 0.0f));
-		}
+			if (moveUp)
+			{
+				Ball->AddImpulse(FVector(3000.0f, 0.0f, 0.0f));
+			}
 
-		if (gameTime >= (currentTime + jumpTimer))
-		{
-			canJump = true;
+			if (moveDown)
+			{
+				Ball->AddImpulse(FVector(-3000.0f, 0.0f, 0.0f));
+			}
+
+			if (moveLeft)
+			{
+				Ball->AddImpulse(FVector(0.0f, -3000.0f, 0.0f));
+			}
+
+			if (moveRight)
+			{
+				Ball->AddImpulse(FVector(0.0f, 3000.0f, 0.0f));
+			}
+
+			if (gameTime >= (currentTime + jumpTimer))
+			{
+				canJump = true;
+			}
 		}
 	}
+	
 }
 
 // Called to bind functionality to input
@@ -114,7 +123,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::Jump()
 {
-	if (canJump)
+	if (canJump && !gameOver)
 	{
 		canJump = false;
 		Ball->AddImpulse(FVector(0.0f, 0.0f, 50000.0f));

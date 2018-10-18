@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeWeapon();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void GameOver();
+
 	//Input Functions
 	void Jump();
 	void MoveUpPressed();
@@ -61,6 +64,7 @@ public:
 	float gameTime;
 	float currentTime;
 	float jumpTimer;
+	bool gameOver;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Weapon)
 	int currentWeapon;
@@ -70,9 +74,4 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Health)
 	float health;
-
-	bool canFire;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Wave)
-	int currentWave;
 };

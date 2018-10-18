@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "EnemySpawnerBase.generated.h"
+#include "RocketBase.generated.h"
 
 UCLASS()
-class TGPSOLO_API AEnemySpawnerBase : public AActor
+class TGPSOLO_API ARocketBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AEnemySpawnerBase();
+	ARocketBase();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,11 +26,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* Mesh;
 
-	//UFUNCTION(BlueprintImplementableEvent)
-	//void SpawnEnemy();
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
-	float spawnTimer;
+	UFUNCTION(BlueprintImplementableEvent)
+	void Explode();
 
-	float gameTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BulletTimers)
+	float rocketTimer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BulletTimers)
+	float rocketDestroyTime;
+	
 };
