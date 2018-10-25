@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void CheckForDeath();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeath();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Health)
 	float health;
 	

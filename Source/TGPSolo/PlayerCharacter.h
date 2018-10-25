@@ -35,14 +35,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UCameraComponent* PlayerCamera;
 
+	/*UFUNCTION(BlueprintImplementableEvent)
+	void ChangeWeapon();*/
+
 	UFUNCTION(BlueprintImplementableEvent)
-	void ChangeWeapon();
+	void OnFire();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void GameOver();
 
 	//Input Functions
+	void FirePressed();
+	void FireReleased();
 	void Jump();
+	void ChangeWeapon();
 	void MoveUpPressed();
 	void MoveDownPressed();
 	void MoveLeftPressed();
@@ -59,12 +65,17 @@ public:
 	bool moveDown;
 	bool moveLeft;
 	bool moveRight;
+	bool isFiring;
 
 	bool canJump;
 	float gameTime;
 	float currentTime;
 	float jumpTimer;
 	bool gameOver;
+	float fireRate;
+
+	UPROPERTY(EditDefaultsOnly, Category = Weapon)
+	float maxFireRate;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Weapon)
 	int currentWeapon;

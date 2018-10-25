@@ -41,6 +41,6 @@ void AEnemyBase::Tick(float DeltaTime)
 	//Check For Death
 	if (health <= 0)
 	{
-		Destroy();
+		OnDeath();
 	}
 }

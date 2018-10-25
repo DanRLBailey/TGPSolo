@@ -13,6 +13,8 @@ AWaveManager::AWaveManager()
 	waveCount = 0;
 	respawnTime = 2;
 	currentTime = respawnTime;
+	score = 0;
+	enemiesKilled = 0;
 }
 
 // Called when the game starts or when spawned

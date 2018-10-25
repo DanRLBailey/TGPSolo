@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "EnemySpawnerBase.generated.h"
+#include "PickupBase.generated.h"
 
 UCLASS()
-class TGPSOLO_API AEnemySpawnerBase : public AActor
+class TGPSOLO_API APickupBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AEnemySpawnerBase();
+	APickupBase();
 
 protected:
 	// Called when the game starts or when spawned

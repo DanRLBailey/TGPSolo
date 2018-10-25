@@ -36,11 +36,14 @@ APlayerCharacter::APlayerCharacter()
 	moveLeft = false;
 	moveRight = false;
 	velocityMultiplier = 100.0f;
+	isFiring = false;
 
 	gameTime = 0.0f;
 	currentTime = 0.0f;
 	jumpTimer = 1.0f;
 	canJump = true;
+	fireRate = 0.0f;
+	maxFireRate = 0.25f;
 
 	currentWeapon = 0;
 	weaponArray = { 0, 1, 2, 3};
@@ -71,8 +74,17 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		Super::Tick(DeltaTime);
 		gameTime += DeltaTime;
+		fireRate += DeltaTime;
 
-		ChangeWeapon();
+		//Firing
+		if (isFiring)
+		{
+			if (fireRate >= maxFireRate)
+			{
+				fireRate = 0;
+				OnFire();
+			}
+		}
 
 		//Movement
 		{
@@ -110,7 +122,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	InputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::FirePressed);
+	InputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::FireReleased);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
+	InputComponent->BindAction("ChangeWeapon", IE_Pressed, this, &APlayerCharacter::ChangeWeapon);
 	InputComponent->BindAction("MoveUp", IE_Pressed, this, &APlayerCharacter::MoveUpPressed);
 	InputComponent->BindAction("MoveDown", IE_Pressed, this, &APlayerCharacter::MoveDownPressed);
 	InputComponent->BindAction("MoveLeft", IE_Pressed, this, &APlayerCharacter::MoveLeftPressed);
@@ -119,6 +134,16 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	InputComponent->BindAction("MoveDown", IE_Released, this, &APlayerCharacter::MoveDownReleased);
 	InputComponent->BindAction("MoveLeft", IE_Released, this, &APlayerCharacter::MoveLeftReleased);
 	InputComponent->BindAction("MoveRight", IE_Released, this, &APlayerCharacter::MoveRightReleased);
+}
+
+void APlayerCharacter::FirePressed()
+{
+	isFiring = true;
+}
+
+void APlayerCharacter::FireReleased()
+{
+	isFiring = false;
 }
 
 void APlayerCharacter::Jump()
@@ -132,6 +157,18 @@ void APlayerCharacter::Jump()
 		{
 			currentTime = gameTime;
 		}
+	}
+}
+
+void APlayerCharacter::ChangeWeapon()
+{
+	if (currentWeapon < (weaponArray.Num() - 1))
+	{
+		currentWeapon++;
+	}
+	else
+	{
+		currentWeapon = 0;
 	}
 }
 

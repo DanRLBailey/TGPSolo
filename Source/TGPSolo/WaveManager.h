@@ -29,7 +29,7 @@ public:
 
 	//Variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Wave)
-	int currentWave;
+	int currentWave; //Display on game over
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Wave)
 	int waveCount;
@@ -39,4 +39,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Timer)
 	float respawnTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	int score; //Display on game over
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	int enemiesKilled; //Display on game over
 };

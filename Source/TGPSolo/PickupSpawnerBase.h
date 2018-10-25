@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "EnemySpawnerBase.generated.h"
+#include "PickupSpawnerBase.generated.h"
 
 UCLASS()
-class TGPSOLO_API AEnemySpawnerBase : public AActor
+class TGPSOLO_API APickupSpawnerBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AEnemySpawnerBase();
+	APickupSpawnerBase();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,4 +25,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = Spawning)
+	float spawnTimer;
+
+	float gameTime;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnPickup();
 };
