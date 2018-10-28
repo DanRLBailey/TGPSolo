@@ -45,4 +45,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
 	int enemiesKilled; //Display on game over
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	float gameTime; //Display on game over
 };

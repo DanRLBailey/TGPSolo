@@ -35,7 +35,7 @@ APlayerCharacter::APlayerCharacter()
 	moveDown = false;
 	moveLeft = false;
 	moveRight = false;
-	velocityMultiplier = 100.0f;
+	moveSpeed = 2000.0f;
 	isFiring = false;
 
 	gameTime = 0.0f;
@@ -90,22 +90,22 @@ void APlayerCharacter::Tick(float DeltaTime)
 		{
 			if (moveUp)
 			{
-				Ball->AddImpulse(FVector(3000.0f, 0.0f, 0.0f));
+				Ball->AddImpulse(FVector(moveSpeed, 0.0f, 0.0f));
 			}
 
 			if (moveDown)
 			{
-				Ball->AddImpulse(FVector(-3000.0f, 0.0f, 0.0f));
+				Ball->AddImpulse(FVector(-(moveSpeed), 0.0f, 0.0f));
 			}
 
 			if (moveLeft)
 			{
-				Ball->AddImpulse(FVector(0.0f, -3000.0f, 0.0f));
+				Ball->AddImpulse(FVector(0.0f, -(moveSpeed), 0.0f));
 			}
 
 			if (moveRight)
 			{
-				Ball->AddImpulse(FVector(0.0f, 3000.0f, 0.0f));
+				Ball->AddImpulse(FVector(0.0f, moveSpeed, 0.0f));
 			}
 
 			if (gameTime >= (currentTime + jumpTimer))

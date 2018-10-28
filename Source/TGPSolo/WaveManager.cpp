@@ -15,6 +15,7 @@ AWaveManager::AWaveManager()
 	currentTime = respawnTime;
 	score = 0;
 	enemiesKilled = 0;
+	gameTime = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -29,6 +30,7 @@ void AWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	currentTime += DeltaTime;
+	gameTime += DeltaTime;
 
 	if (currentTime >= respawnTime)
 	{

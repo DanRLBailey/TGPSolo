@@ -60,7 +60,7 @@ public:
 
 	//Input Variables
 	FVector currentVelocity;
-	float velocityMultiplier;
+	float moveSpeed;
 	bool moveUp;
 	bool moveDown;
 	bool moveLeft;
